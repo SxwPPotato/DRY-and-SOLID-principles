@@ -43,14 +43,14 @@ public:
     std::string printAsHTML() const override
     {
         if (format_ != Format::kHTML) {
-            throw std::runtime_error("Invalid format!");
+            printAsText();
         }
         return "<html>" + data_ + "<html/>";
     }
     std::string printAsText() const override
     {
         if (format_ != Format::kText) {
-            throw std::runtime_error("Invalid format!");
+            printAsJSON();
         }
         return data_;
     }
@@ -70,11 +70,6 @@ private:
 void saveTo(std::ofstream& file, const Data& data)
 { 
         file << data.printAsText();
-       
-        file << data.printAsJSON();
-     
-        file << data.printAsHTML();
- 
 }
 
 void saveToAsHTML(std::ofstream& file, const Data& printable) {
@@ -87,4 +82,18 @@ void saveToAsJSON(std::ofstream& file, const Data& printable) {
 
 void saveToAsText(std::ofstream& file, const Data& printable) {
     saveTo(file, printable);
+}
+
+
+
+
+int main() {
+
+    Data::Format Text = Data::Format::kText;
+    Data data("Text", Text);
+
+    std::ofstream out;
+    out.open("file.txt");
+    saveToAsText(out, data);
+
 }
